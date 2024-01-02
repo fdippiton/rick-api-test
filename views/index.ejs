@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rick and Morty Characters</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <!-- ------------------------------- Header -------------------------------- -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container">
+        <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+
+        <!-- Title -->
+        <h1 class="">
+          <a
+            href="/"
+            class="link-underline link-underline-opacity-0 character-title"
+            >Rick and Morty Characters</a
+          >
+        </h1>
+
+        <!-- Form -->
+        <form id="searchForm" class="d-flex" role="search" action="/character">
+          <input
+            id="search-input"
+            class="form-control me-2"
+            type="search"
+            placeholder="Search by id"
+            aria-label="Search"
+            name="search"
+          />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+    <!-- ------------------------------- /Header ------------------------------- -->
+
+    <div class="container">
+      <!-- ------------------------------- Filter -------------------------------- -->
+      <div class="row mt-5 mb-5">
+        <div class="col-2">
+          <form action="/characterSearchBy">
+            <select name="filter">
+              <option>Select</option>
+              <optgroup label="Status">
+                <option value="alive" data-label="status">Alive</option>
+                <option value="dead" data-label="status">Dead</option>
+                <option value="unknow" data-label="status">Unknow</option>
+              </optgroup>
+
+              <optgroup label="Gender">
+                <option value="male" data-label="gender">Male</option>
+                <option value="female" data-label="gender">Female</option>
+                <option value="genderless" data-label="gender">
+                  Genderless
+                </option>
+                <option value="unknow" data-label="gender">Unknow</option>
+              </optgroup>
+
+              <optgroup label="Species">
+                <option value="human" data-label="species">Human</option>
+                <option value="alien" data-label="species">Alien</option>
+                <option value="unknow" data-label="species">Unknow</option>
+              </optgroup>
+            </select>
+            <!-- Campo oculto para almacenar data-label -->
+            <input
+              type="hidden"
+              name="filter-label"
+              id="filter-label"
+              value=""
+            />
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+      <!-- ------------------------------- /Filter -------------------------------- -->
+
+      <!-- -------------------------------- Cards -------------------------------- -->
+      <div class="row d-flex justify-content-between">
+        <% character.forEach( elem => { %>
+        <div class="col-5">
+          <div class="card mb-4 scale-in-bottom" style="max-width: 540px">
+            <div class="row g-0">
+              <div class="col-md-4">
+                <img
+                  src="<%= elem['image'] %>"
+                  class="img-fluid rounded-start img-char"
+                  alt="..."
+                />
+              </div>
+
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title"><%= elem['name'] %></h5>
+                  <h5 class="card-text">Id: <%= elem['id'] %></h5>
+                  <h6 class="card-text"><%= elem['gender'] %></h6>
+                  <h6 class="card-text"><%= elem['species'] %></h6>
+                  <h6 class="card-text"><%= elem['status'] %></h6>
+                  <h6 class="card-text"><%= elem['origin']['name'] %></h6>
+                  <h6 class="card-text">
+                    <small class="text-body-secondary"
+                      ><%= elem['created'] %></small
+                    >
+                  </h6>
+                  <a href="/character/<%= elem['id'] %>" class="btn"
+                    >See more</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <!-- -------------------------------- /Cards -------------------------------- -->
+    </div>
+    <script>
+      // Agregar un evento para actualizar el valor del campo oculto al cambiar la opción seleccionada
+      const selectElement = document.querySelector('select[name="filter"]');
+      const hiddenInput = document.getElementById("filter-label");
+
+      selectElement.addEventListener("change", () => {
+        const selectedOption =
+          selectElement.options[selectElement.selectedIndex];
+        hiddenInput.value = selectedOption.getAttribute("data-label");
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
